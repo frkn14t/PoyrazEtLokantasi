@@ -1,6 +1,6 @@
 /* ==========================================
    Poyraz Et Lokantası - Digital Menu Styles
-   Warm Rustic Theme — v2 (Smooth + Responsive)
+   Warm Rustic Theme — v3 (Performance-first)
    ========================================== */
 
 /* === CSS Variables === */
@@ -13,7 +13,6 @@
     --color-primary-light: #dbb08a;
     --color-primary-dark: #a07050;
     --color-accent: #8b2e2e;
-    --color-accent-light: #b84040;
     --color-gold: #d4a853;
     --color-gold-light: #e8c67a;
     --color-text: #f0e6dc;
@@ -29,17 +28,14 @@
 
     --radius-sm: 8px;
     --radius-md: 12px;
-    --radius-lg: 20px;
     --radius-xl: 28px;
 
     --shadow-card: 0 4px 20px rgba(0,0,0,0.3);
-    --shadow-card-hover: 0 8px 32px rgba(0,0,0,0.4);
     --shadow-glow: 0 0 30px rgba(200,149,108,0.15);
-
-    --nav-height: 56px;
+    --nav-height: 52px;
 }
 
-/* === Reset & Base === */
+/* === Reset === */
 *, *::before, *::after {
     margin: 0;
     padding: 0;
@@ -48,7 +44,7 @@
 
 html {
     scroll-behavior: smooth;
-    scroll-padding-top: calc(var(--nav-height) + 16px);
+    scroll-padding-top: calc(var(--nav-height) + 12px);
 }
 
 body {
@@ -61,7 +57,7 @@ body {
 }
 
 /* ============================================
-   HERO SECTION
+   HERO
    ============================================ */
 .hero {
     position: relative;
@@ -72,26 +68,9 @@ body {
     align-items: center;
     justify-content: center;
     background:
-        radial-gradient(ellipse at 30% 20%, rgba(139,46,46,0.25) 0%, transparent 50%),
-        radial-gradient(ellipse at 70% 80%, rgba(200,149,108,0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 30% 20%, rgba(139,46,46,0.2) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 80%, rgba(200,149,108,0.12) 0%, transparent 50%),
         linear-gradient(180deg, #1a1210 0%, #0f0c0a 100%);
-    overflow: hidden;
-}
-
-.hero::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image:
-        radial-gradient(circle at 20% 50%, rgba(200,149,108,0.05) 1px, transparent 1px),
-        radial-gradient(circle at 80% 30%, rgba(200,149,108,0.05) 1px, transparent 1px);
-    background-size: 60px 60px, 80px 80px;
-    animation: subtleFloat 20s ease-in-out infinite;
-}
-
-@keyframes subtleFloat {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
 }
 
 .hero-overlay {
@@ -112,7 +91,6 @@ body {
 .logo-icon {
     font-size: 3.5rem;
     margin-bottom: 16px;
-    filter: drop-shadow(0 0 20px rgba(200,100,50,0.5));
     animation: flicker 3s ease-in-out infinite;
 }
 
@@ -128,9 +106,7 @@ body {
     color: var(--color-cream);
     letter-spacing: 6px;
     text-transform: uppercase;
-    text-shadow:
-        0 2px 10px rgba(0,0,0,0.5),
-        0 0 40px rgba(200,149,108,0.2);
+    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
     line-height: 1.1;
 }
 
@@ -141,7 +117,6 @@ body {
     letter-spacing: 12px;
     text-transform: uppercase;
     margin-top: 8px;
-    font-weight: 400;
 }
 
 .hero-tagline {
@@ -165,7 +140,6 @@ body {
     font-size: 0.8rem;
     letter-spacing: 2px;
     text-transform: uppercase;
-    animation: fadeInUp 1.5s ease 1s both;
 }
 
 .scroll-arrow {
@@ -178,35 +152,22 @@ body {
     50% { transform: translateY(8px); }
 }
 
-@keyframes fadeInUp {
-    from { opacity: 0; transform: translateX(-50%) translateY(20px); }
-    to { opacity: 1; transform: translateX(-50%) translateY(0); }
-}
-
 /* ============================================
-   CATEGORY NAVIGATION (Sticky)
+   NAVIGATION (lightweight - no backdrop-filter)
    ============================================ */
 .category-nav {
     position: sticky;
     top: 0;
     z-index: 100;
-    background: rgba(26,18,16,0.92);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    background: rgba(26,18,16,0.97);
     border-bottom: 1px solid var(--color-border);
-    transition: box-shadow 0.4s ease;
-}
-
-.category-nav.scrolled {
-    box-shadow: 0 4px 30px rgba(0,0,0,0.5);
 }
 
 .nav-inner {
     display: flex;
     gap: 4px;
-    padding: 10px 12px;
+    padding: 8px 12px;
     overflow-x: auto;
-    scroll-snap-type: x mandatory;
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
@@ -215,7 +176,6 @@ body {
 
 .nav-link {
     flex-shrink: 0;
-    scroll-snap-align: start;
     padding: 7px 14px;
     border-radius: var(--radius-xl);
     font-size: 0.78rem;
@@ -223,7 +183,7 @@ body {
     color: var(--color-text-muted);
     text-decoration: none;
     white-space: nowrap;
-    transition: all 0.3s ease;
+    transition: color 0.2s, background 0.2s;
     border: 1px solid transparent;
 }
 
@@ -236,7 +196,6 @@ body {
     color: var(--color-bg);
     background: linear-gradient(135deg, var(--color-primary), var(--color-gold));
     border-color: transparent;
-    box-shadow: 0 2px 12px rgba(200,149,108,0.3);
 }
 
 /* ============================================
@@ -245,17 +204,17 @@ body {
 .menu-container {
     max-width: 900px;
     margin: 0 auto;
-    padding: 24px 16px 60px;
+    padding: 20px 16px 60px;
 }
 
 /* ============================================
-   SECTION DIVIDERS (smooth flow between categories)
+   SECTION DIVIDERS
    ============================================ */
 .section-divider {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 16px 0;
+    padding: 12px 0;
 }
 
 .divider-dot {
@@ -274,51 +233,36 @@ body {
     top: 50%;
     width: 40px;
     height: 1px;
-    background: linear-gradient(90deg, transparent, var(--color-border-light));
+    transform: translateY(-50%);
 }
 
 .divider-dot::before {
     right: 16px;
-    transform: translateY(-50%);
     background: linear-gradient(90deg, transparent, var(--color-border-light));
 }
 
 .divider-dot::after {
     left: 16px;
-    transform: translateY(-50%);
     background: linear-gradient(90deg, var(--color-border-light), transparent);
 }
 
 /* ============================================
-   MENU SECTIONS (Reveal animation)
+   MENU SECTIONS — always visible, no JS dependency
    ============================================ */
 .menu-section {
-    margin-bottom: 12px;
-}
-
-/* Reveal animation classes - controlled by JS IntersectionObserver */
-.reveal-section {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-.reveal-section.revealed {
-    opacity: 1;
-    transform: translateY(0);
+    margin-bottom: 8px;
 }
 
 .section-header {
     text-align: center;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
     padding-top: 8px;
 }
 
 .section-icon {
     font-size: 2rem;
     display: block;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
 }
 
 .section-header h2 {
@@ -333,7 +277,7 @@ body {
     width: 60px;
     height: 3px;
     background: linear-gradient(90deg, var(--color-primary), var(--color-gold));
-    margin: 12px auto 0;
+    margin: 10px auto 0;
     border-radius: 2px;
 }
 
@@ -354,7 +298,7 @@ body {
 }
 
 /* ============================================
-   MENU CARD
+   MENU CARD — visible by default, simple hover
    ============================================ */
 .menu-card {
     position: relative;
@@ -366,16 +310,7 @@ body {
     align-items: center;
     justify-content: space-between;
     gap: 12px;
-    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-    overflow: hidden;
-    /* Card stagger animation — set by JS */
-    opacity: 0;
-    transform: translateY(12px);
-}
-
-.menu-card.card-visible {
-    opacity: 1;
-    transform: translateY(0);
+    transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
 }
 
 .menu-card::before {
@@ -387,18 +322,22 @@ body {
     width: 3px;
     background: linear-gradient(180deg, var(--color-primary), var(--color-gold));
     opacity: 0;
-    transition: opacity 0.35s ease;
+    transition: opacity 0.2s;
 }
 
 .menu-card:hover {
     background: var(--color-bg-card-hover);
     border-color: var(--color-border-light);
     box-shadow: var(--shadow-card);
-    transform: translateY(-2px);
 }
 
 .menu-card:hover::before {
     opacity: 1;
+}
+
+/* Active/tap state for mobile */
+.menu-card:active {
+    transform: scale(0.99);
 }
 
 .card-content {
@@ -456,7 +395,7 @@ body {
 }
 
 /* ============================================
-   SPECIAL CARDS (Özel Gün)
+   SPECIAL CARDS
    ============================================ */
 .special-section .section-header h2 {
     background: linear-gradient(135deg, var(--color-gold), var(--color-primary));
@@ -534,110 +473,59 @@ body {
 }
 
 /* ============================================
-   RESPONSIVE — MOBILE FIRST
+   RESPONSIVE
    ============================================ */
-
-/* Extra small phones (< 360px) */
 @media (max-width: 359px) {
-    .nav-link {
-        padding: 5px 10px;
-        font-size: 0.7rem;
-    }
-
-    .menu-card {
-        padding: 12px;
-        gap: 8px;
-    }
-
+    .nav-link { padding: 5px 10px; font-size: 0.7rem; }
+    .menu-card { padding: 12px; gap: 8px; }
     .item-name { font-size: 0.88rem; }
     .item-desc { font-size: 0.72rem; }
     .badge { font-size: 0.65rem; padding: 2px 7px; }
-
     .logo-subtitle { letter-spacing: 6px; }
 }
 
-/* Small phones (360–479px) */
 @media (min-width: 360px) and (max-width: 479px) {
-    .nav-link {
-        padding: 6px 12px;
-        font-size: 0.74rem;
-    }
-
+    .nav-link { padding: 6px 12px; font-size: 0.74rem; }
     .menu-card { padding: 14px; }
     .item-name { font-size: 0.92rem; }
 }
 
-/* Standard phones (480–599px) */
-@media (min-width: 480px) and (max-width: 599px) {
-    .menu-container { padding: 24px 20px 50px; }
-}
-
-/* Tablets & large phones (600px+): 2-column grid */
 @media (min-width: 600px) {
     .menu-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 12px;
     }
-
-    .menu-container {
-        padding: 32px 24px 80px;
-    }
-
-    .menu-section { margin-bottom: 16px; }
-
-    .nav-inner { padding: 12px 20px; gap: 6px; }
+    .menu-container { padding: 28px 24px 80px; }
+    .nav-inner { padding: 10px 20px; gap: 6px; }
     .nav-link { padding: 8px 16px; font-size: 0.82rem; }
 }
 
-/* Desktop (900px+) */
 @media (min-width: 900px) {
-    .menu-container {
-        padding: 40px 32px 100px;
-    }
-
+    .menu-container { padding: 40px 32px 100px; }
     .menu-card { padding: 20px 22px; }
     .item-name { font-size: 1.05rem; }
     .item-desc { font-size: 0.82rem; }
 }
 
 /* ============================================
-   SMOOTH SCROLLBAR
+   SCROLLBAR
    ============================================ */
 ::-webkit-scrollbar { width: 5px; }
 ::-webkit-scrollbar-track { background: var(--color-bg); }
-::-webkit-scrollbar-thumb {
-    background: var(--color-border-light);
-    border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover { background: var(--color-primary-dark); }
+::-webkit-scrollbar-thumb { background: var(--color-border-light); border-radius: 3px; }
 
-/* ============================================
-   SELECTION
-   ============================================ */
 ::selection {
     background: rgba(200,149,108,0.3);
     color: var(--color-cream);
 }
 
 /* ============================================
-   REDUCED MOTION — accessibility
+   REDUCED MOTION
    ============================================ */
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
         animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
     }
-
     html { scroll-behavior: auto; }
-
-    .reveal-section {
-        opacity: 1;
-        transform: none;
-    }
-
-    .menu-card {
-        opacity: 1;
-        transform: none;
-    }
 }
