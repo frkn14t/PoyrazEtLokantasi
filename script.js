@@ -1,73 +1,50 @@
 // ==========================================
-// Poyraz Et Lokantası - Menu Interactions v4
+// Poyraz Et Lokantası - Menu Interactions v5
+// Maksimum Performans (Sıfır Lag - Anında Geçiş)
 // ==========================================
 
 document.addEventListener('DOMContentLoaded', () => {
     const navLinks = document.querySelectorAll('.nav-link');
     const sections = document.querySelectorAll('.menu-section');
-    const nav = document.getElementById('categoryNav');
-
-    // 1. Tıklandığında kesin ve hızlı kaydırma
+    
+    // 1. Tıklama Olayı
+    // Dikey sayfa kaydırmasını TAMAMEN tarayıcıya bıraktık (Sıfır lag, anında atlama).
+    // JS sadece üstteki yatay menüyü hareket ettirir ve rengi değiştirir.
     navLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            
-            // Anında aktif class'ı değiştir (gecikme hissini yok eder)
+        link.addEventListener('click', function() {
+            // Aktif class'ı anında değiştir
             navLinks.forEach(l => l.classList.remove('active'));
             this.classList.add('active');
             
-            const targetId = this.getAttribute('href').substring(1);
-            const targetSection = document.getElementById(targetId);
-            
-            if (targetSection) {
-                // Menünün dinamik yüksekliğini hesaba kat
-                const navHeight = nav.offsetHeight;
-                
-                // Nokta atışı hedef pozisyonu hesapla (menü altında kalmaması için)
-                const targetPosition = targetSection.getBoundingClientRect().top + window.pageYOffset - navHeight - 10;
-                
-                // Akıcı ama JS tabanlı native kaydırma (CSS'ten daha stabil çalışır)
-                window.scrollTo({
-                    top: targetPosition,
-                    behavior: 'smooth'
-                });
-            }
+            // Yatay menüde seçilen öğeyi ortala (animasyonsuz, anında)
+            this.scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'center' });
         });
     });
 
-    // 2. Scroll yaparken hangi kategoride olduğumuzu bulma (Performanslı)
-    let scrollTimeout;
-    window.addEventListener('scroll', () => {
-        if (scrollTimeout) {
-            window.cancelAnimationFrame(scrollTimeout);
-        }
-        
-        scrollTimeout = window.requestAnimationFrame(() => {
-            const navHeight = nav.offsetHeight;
-            let currentSection = '';
-            
-            // Ekranda hangi section'ın olduğunu tespit et
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop - navHeight - 50;
-                if (window.pageYOffset >= sectionTop) {
-                    currentSection = section.getAttribute('id');
-                }
-            });
-
-            // Üst menüdeki aktif butonu güncelle
-            if (currentSection) {
+    // 2. Sayfa kaydırılırken aktif kategoriyi bulma
+    // Ağır scroll event'i yerine, sıfır kasmaya neden olan native IntersectionObserver kullanıyoruz.
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const id = entry.target.getAttribute('id');
                 navLinks.forEach(link => {
-                    if (link.getAttribute('href') === `#${currentSection}`) {
-                        if (!link.classList.contains('active')) {
-                            navLinks.forEach(l => l.classList.remove('active'));
-                            link.classList.add('active');
-                            
-                            // Üst menüyü sağa/sola kaydırarak aktif elemanı ekrana getir
-                            link.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-                        }
+                    if (link.getAttribute('href') === `#${id}`) {
+                        // Seçili olanı aktif yap
+                        link.classList.add('active');
+                        // Üst menüyü de kaydır ki ekranda görünsün
+                        link.scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'center' });
+                    } else {
+                        link.classList.remove('active');
                     }
                 });
             }
         });
-    }, { passive: true });
+    }, {
+        // Ekranın üst kısmına yaklaşan section'ı tetikle
+        rootMargin: '-80px 0px -70% 0px', 
+        threshold: 0
+    });
+
+    // Tüm kategorileri dinlemeye başla
+    sections.forEach(section => observer.observe(section));
 });
